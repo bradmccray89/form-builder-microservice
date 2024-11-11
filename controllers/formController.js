@@ -89,4 +89,56 @@ exports.getFormById = async (req, res) => {
 	}
 };
 
+exports.getFormSchema = async (req, res) => {
+	try {
+		const forms = await Form.findAll({
+			where: { organization_id: req.user.organizationId },
+			include: [
+				{
+					model: FormField,
+					as: 'fields',
+					include: [
+						{
+							model: FormFieldOption,
+							as: 'options',
+						},
+					],
+				},
+			],
+		});
+
+		const formSchema = forms.map((form) => {
+			return {
+				id: form.id,
+				title: form.title,
+				description: form.description,
+				fields: form.fields.map((field) => {
+					return {
+						id: field.id,
+						label: field.label,
+						field_type: field.field_type,
+						placeholder: field.placeholder,
+						required: field.required,
+						order: field.order,
+						validation: field.validation,
+						conditional_logic: field.conditional_logic,
+						options: field.options.map((option) => {
+							return {
+								id: option.id,
+								value: option.value,
+								label: option.label,
+							};
+						}),
+					};
+				}),
+			};
+		});
+
+		res.json(formSchema);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Failed to retrieve form schema' });
+	}
+};
+
 // Add other CRUD operations as needed

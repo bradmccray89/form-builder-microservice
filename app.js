@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const organizationRoutes = require('./routes/organizationRoutes');
 const formRoutes = require('./routes/formRoutes');
 const formResponseRoutes = require('./routes/formResponseRoutes');
+const formLinkRoutes = require('./routes/formLinkRoutes');
 
 // Middleware
 app.use(helmet());
@@ -20,6 +21,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/organizations', organizationRoutes);
 app.use('/api/forms', formRoutes);
 app.use('/api/form-responses', formResponseRoutes);
+app.use('/api/form-links', formLinkRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

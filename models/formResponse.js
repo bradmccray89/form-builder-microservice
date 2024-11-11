@@ -1,3 +1,4 @@
+// models/formResponse.js
 module.exports = (sequelize, DataTypes) => {
 	const FormResponse = sequelize.define(
 		'FormResponse',
@@ -7,8 +8,10 @@ module.exports = (sequelize, DataTypes) => {
 			submitted_at: {
 				type: DataTypes.DATE,
 				allowNull: false,
-				defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+				defaultValue: DataTypes.NOW,
 			},
+			form_link_id: { type: DataTypes.UUID, allowNull: true },
+			respondent_email: { type: DataTypes.STRING, allowNull: true },
 		},
 		{
 			tableName: 'form_responses',
@@ -21,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
 		FormResponse.belongsTo(models.User, {
 			foreignKey: 'submitted_by',
 			as: 'submitter',
+		});
+		FormResponse.belongsTo(models.FormLink, {
+			foreignKey: 'form_link_id',
+			as: 'formLink',
 		});
 		FormResponse.hasMany(models.FormResponseAnswer, {
 			foreignKey: 'form_response_id',

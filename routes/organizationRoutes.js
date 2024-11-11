@@ -20,4 +20,51 @@ router.get(
 	organizationController.getOrganizations
 );
 
+router.get(
+	'/:id',
+	authenticate,
+	authorize(['admin']),
+	organizationController.getOrganizationById
+);
+
+router.put(
+	'/:id',
+	authenticate,
+	authorize(['admin']),
+	organizationController.updateOrganization
+);
+
+router.delete(
+	'/:id',
+	authenticate,
+	authorize(['admin']),
+	organizationController.deleteOrganization
+);
+
+router.post(
+	'/:id/invite',
+	authenticate,
+	authorize(['admin']),
+	organizationController.inviteUserToOrganization
+);
+
+router.post(
+	'/:id/accept-invite',
+	authenticate,
+	organizationController.acceptOrganizationInvite
+);
+
+router.post(
+	'/:id/leave',
+	authenticate,
+	organizationController.leaveOrganization
+);
+
+router.post(
+	'/:id/remove-user',
+	authenticate,
+	authorize(['admin']),
+	organizationController.removeUserFromOrganization
+);
+
 module.exports = router;

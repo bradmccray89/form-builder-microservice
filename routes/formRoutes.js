@@ -33,6 +33,14 @@ router.get(
 	formController.getFormById
 );
 
+// Get all data for building a form
+router.get(
+	'/schema',
+	authenticate,
+	authorize(['admin', 'editor', 'viewer']),
+	formController.getFormSchema
+);
+
 // Additional routes for updating and deleting forms can be added here
 
 module.exports = router;
